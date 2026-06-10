@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { COLLECTIONS, PROJECTS } from '../data';
+import { usePageMeta } from '../utils/usePageMeta';
 
 const CollectionPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,11 +15,16 @@ const CollectionPage: React.FC = () => {
     return PROJECTS.filter(p => p.collectionId === id);
   }, [id]);
 
+  usePageMeta(
+    collection ? `${collection.title} | Artiflex` : 'Коллекция | Artiflex',
+    collection?.description
+  );
+
   if (!collection) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Коллекция не найдена</h2>
-        <button onClick={() => navigate('/')} className="text-neutral-500 underline">
+        <button onClick={() => navigate('/')} className="text-muted underline">
           Вернуться на главную
         </button>
       </div>
@@ -27,14 +33,15 @@ const CollectionPage: React.FC = () => {
 
   return (
     <div className="pb-8">
-       <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-neutral-100">
+       <div className="sticky top-0 z-40 bg-bg/80 backdrop-blur-md border-b border-border">
         <div className="flex items-center py-3 px-4">
-          <button 
+          <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 group px-2 py-2 -ml-2 rounded-xl hover:bg-neutral-100 transition-colors duration-200 active:scale-95"
+            aria-label="Назад"
+            className="flex items-center gap-2 group px-2 py-2 -ml-2 rounded-xl hover:bg-surface transition-colors duration-200 active:scale-95"
           >
-            <ArrowLeft size={22} className="text-neutral-900" />
-            <span className="text-sm font-medium text-neutral-500 group-hover:text-neutral-900 transition-colors">
+            <ArrowLeft size={22} className="text-text" />
+            <span className="text-sm font-medium text-muted group-hover:text-text transition-colors">
               Назад
             </span>
           </button>
@@ -49,9 +56,10 @@ const CollectionPage: React.FC = () => {
       >
         {/* Hero Section for Collection */}
         <div className="relative h-48 w-full rounded-2xl overflow-hidden mb-6">
-          <img 
-            src={collection.image} 
-            alt={collection.title} 
+          <img
+            src={collection.image}
+            alt={collection.title}
+            loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40" />
@@ -72,7 +80,7 @@ const CollectionPage: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className={`relative group overflow-hidden rounded-2xl bg-neutral-100 ${project.span} aspect-square ${
+              className={`relative group overflow-hidden rounded-2xl bg-surface ${project.span} aspect-square ${
                 project.span === 'col-span-2' ? 'aspect-[2/1] sm:aspect-[2.5/1]' : ''
               }`}
             >
@@ -80,6 +88,7 @@ const CollectionPage: React.FC = () => {
               <img
                 src={project.image}
                 alt={project.title}
+                loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80" />

@@ -17,7 +17,7 @@ const BottomNav: React.FC = () => {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
       <div className="w-full max-w-screen-md pointer-events-auto">
-        <div className="bg-white/80 backdrop-blur-xl border-t border-neutral-200 pb-[env(safe-area-inset-bottom)]">
+        <div className="bg-surface/80 backdrop-blur-xl border-t border-border pb-[env(safe-area-inset-bottom)]">
           <div className="flex justify-between items-center px-6 py-3 pb-5 md:pb-3">
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname === item.path || 
@@ -32,13 +32,13 @@ const BottomNav: React.FC = () => {
                 >
                   <div className={`
                     relative p-1.5 rounded-xl transition-all duration-300
-                    ${isActive ? 'bg-neutral-100 text-black' : 'text-neutral-400 group-hover:text-neutral-600'}
+                    ${isActive ? 'bg-surface-2 text-text' : 'text-muted group-hover:text-text'}
                   `}>
                     <Icon strokeWidth={isActive ? 2.5 : 2} size={24} />
                   </div>
                   <span className={`
                     text-[10px] font-medium tracking-wide transition-colors duration-200
-                    ${isActive ? 'text-black' : 'text-neutral-400'}
+                    ${isActive ? 'text-text' : 'text-muted'}
                   `}>
                     {item.label}
                   </span>

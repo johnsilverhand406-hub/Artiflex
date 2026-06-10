@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Artiflex | 3D Studio</title>
+    <title>Artiflex — 3D-печать и моделирование в Коврове</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,18 @@
                 800: '#262626',
                 900: '#171717',
                 950: '#0a0a0a',
-              }
+              },
+              bg: '#0d1b2a',
+              surface: '#112236',
+              'surface-2': '#162a42',
+              border: '#1e3a55',
+              text: '#e8edf2',
+              muted: '#8fa3b8',
+              faint: '#4a6278',
+              accent: '#a8bfd4',
+              'accent-glow': '#c5d8ed',
+              cta: '#4a9eda',
+              'cta-hover': '#2d85c7',
             },
             spacing: {
               'safe-area': 'env(safe-area-inset-bottom)',
@@ -70,7 +81,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-neutral-50 text-neutral-900 antialiased selection:bg-neutral-200 selection:text-black">
+  <body class="bg-bg text-text antialiased selection:bg-accent selection:text-bg">
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>

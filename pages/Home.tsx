@@ -1,9 +1,17 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowUpRight, Layers } from 'lucide-react';
-import { PROJECTS, COLLECTIONS } from '../data';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { Printer, Box } from 'lucide-react';
 import { Category } from '../types';
+import { usePageMeta } from '../utils/usePageMeta';
+import WorkCard from '../components/WorkCard';
+import WorkLightbox from '../components/WorkLightbox';
+import { slaWorks, fdmWorks, modelingWorks, Work } from '../data/works';
+
+const ENTRY_CARDS = [
+  { Icon: Printer, title: '3D-Печать', sub: 'SLA и FDM — выбери формат', to: '/print' },
+  { Icon: Box, title: '3D-Моделирование', sub: 'Модель по фото, чертежу, образцу', to: '/modeling' },
+];
 
 const TABS: { id: Category; label: string }[] = [
   { id: 'print', label: '3D Печать' },
@@ -12,12 +20,12 @@ const TABS: { id: Category; label: string }[] = [
 
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Category>('print');
+  const [selectedWork, setSelectedWork] = useState<Work | null>(null);
   const navigate = useNavigate();
-
-  // Filter simple projects for modeling
-  const modelingProjects = useMemo(() => {
-    return PROJECTS.filter(p => p.category === 'model');
-  }, []);
+  usePageMeta(
+    'Artiflex — 3D-печать и моделирование в Коврове',
+    'Студия 3D-печати SLA и FDM, 3D-моделирование. г. Ковров, ул. Ватутина 59.'
+  );
 
   return (
     <div className="pb-8">
@@ -27,8 +35,28 @@ const Home: React.FC = () => {
         </div>
       </header>
 
-      <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-sm py-2 -mx-4 px-4 mb-2">
-        <div className="bg-neutral-100 p-1 rounded-xl inline-flex w-full">
+      {/* Service entry cards */}
+      <div className="grid grid-cols-2 gap-3 mb-5">
+        {ENTRY_CARDS.map(({ Icon, title, sub, to }) => (
+          <motion.div
+            key={to}
+            whileHover={{ scale: 1.02, borderColor: '#a8bfd4' }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            onClick={() => navigate(to)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter') navigate(to); }}
+            className="border border-border bg-surface rounded-2xl p-5 cursor-pointer flex flex-col gap-2 items-start active:scale-[0.98] transition-transform outline-none"
+          >
+            <Icon size={32} className="text-accent" />
+            <h2 className="text-text text-lg font-bold leading-tight">{title}</h2>
+            <p className="text-muted text-xs">{sub}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="sticky top-0 z-30 bg-bg/90 backdrop-blur-sm py-2 -mx-4 px-4 mb-2">
+        <div className="bg-surface p-1 rounded-xl inline-flex w-full">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -37,13 +65,13 @@ const Home: React.FC = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`
                   relative flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 ease-out z-10
-                  ${isActive ? 'text-neutral-900 shadow-sm' : 'text-neutral-500 hover:text-neutral-700'}
+                  ${isActive ? 'text-text shadow-sm' : 'text-muted hover:text-text'}
                 `}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-white rounded-lg shadow-sm"
+                    className="absolute inset-0 bg-surface-2 rounded-lg shadow-sm"
                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
                 )}
@@ -54,85 +82,44 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Content Switcher */}
+      {/* Content Switcher — photo galleries (reuse WorkCard + WorkLightbox) */}
       <div className="mt-6">
         {activeTab === 'print' ? (
-          // COLLECTIONS GRID
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }}
-            className="space-y-4"
+          // SLA (left) + FDM (right) — two columns
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="grid grid-cols-2 gap-3"
           >
-            {COLLECTIONS.map((collection, index) => (
-              <motion.div
-                key={collection.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => navigate(`/collection/${collection.id}`)}
-                className="relative h-48 rounded-2xl overflow-hidden cursor-pointer group active:scale-[0.98] transition-transform"
-              >
-                <img 
-                  src={collection.image} 
-                  alt={collection.title} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
-                <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <h3 className="text-2xl font-bold mb-1">{collection.title}</h3>
-                      <p className="text-sm text-white/80 font-medium">{collection.description}</p>
-                    </div>
-                    <div className="bg-white/20 backdrop-blur-md p-2 rounded-full">
-                       <ArrowUpRight className="text-white" size={20} />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            <div className="space-y-3">
+              <p className="text-sm text-muted font-medium">SLA</p>
+              {slaWorks.map((work) => (
+                <WorkCard key={work.id} work={work} onClick={() => setSelectedWork(work)} />
+              ))}
+            </div>
+            <div className="space-y-3">
+              <p className="text-sm text-muted font-medium">FDM</p>
+              {fdmWorks.map((work) => (
+                <WorkCard key={work.id} work={work} onClick={() => setSelectedWork(work)} />
+              ))}
+            </div>
           </motion.div>
         ) : (
-          // MODELING PROJECTS GRID
-          <motion.div layout className="grid grid-cols-2 gap-3 sm:gap-4">
-            <AnimatePresence mode="popLayout">
-              {modelingProjects.map((project) => (
-                <motion.div
-                  layout
-                  key={project.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className={`relative group overflow-hidden rounded-2xl bg-neutral-100 ${project.span} aspect-square ${
-                    project.span === 'col-span-2' ? 'aspect-[2/1] sm:aspect-[2.5/1]' : ''
-                  }`}
-                >
-                  <Link to={`/project/${project.id}`} className="absolute inset-0 z-20 block w-full h-full" />
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80" />
-                  
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white flex justify-between items-end pointer-events-none">
-                    <div>
-                      <h3 className={`font-semibold leading-tight ${project.span === 'col-span-2' ? 'text-xl' : 'text-sm'}`}>
-                        {project.title}
-                      </h3>
-                    </div>
-                    <div className="bg-white/20 backdrop-blur-md p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/10">
-                      <ArrowUpRight size={14} className="text-white" />
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+          // 3D modeling portfolio — single column
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-3"
+          >
+            {modelingWorks.map((work) => (
+              <WorkCard key={work.id} work={work} onClick={() => setSelectedWork(work)} />
+            ))}
           </motion.div>
         )}
       </div>
+
+      {/* Shared lightbox (rendered outside the animated/transformed content) */}
+      <WorkLightbox work={selectedWork} onClose={() => setSelectedWork(null)} />
     </div>
   );
 };

@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vercel
+
+# Local debug / screenshot artifacts (keep public/ assets)
+/*.png
+/lb2.js
+deploy.log

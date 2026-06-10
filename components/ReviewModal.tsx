@@ -107,7 +107,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] flex items-center justify-center p-4"
           >
             {/* Modal Container */}
             <motion.div
@@ -115,11 +115,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md bg-white/90 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl overflow-hidden relative"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+              className="w-full max-w-md bg-surface/95 backdrop-blur-xl border border-border shadow-2xl rounded-3xl overflow-y-auto overscroll-contain max-h-[90vh] relative"
             >
               <button
                 onClick={onClose}
-                className="absolute right-4 top-4 p-2 text-neutral-400 hover:text-black transition-colors z-10 rounded-full hover:bg-black/5"
+                aria-label="Закрыть"
+                className="absolute right-4 top-4 p-2 text-muted hover:text-text transition-colors z-10 rounded-full hover:bg-white/5"
               >
                 <X size={20} />
               </button>
@@ -133,11 +135,11 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
                       animate={{ opacity: 1, scale: 1 }}
                       className="flex flex-col items-center justify-center py-8 text-center"
                     >
-                      <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+                      <div className="w-16 h-16 bg-green-500/15 text-green-400 rounded-full flex items-center justify-center mb-4">
                         <CheckCircle size={32} />
                       </div>
-                      <h3 className="text-2xl font-bold text-neutral-900 mb-2">Отзыв отправлен!</h3>
-                      <p className="text-neutral-500 max-w-[260px]">
+                      <h3 className="text-2xl font-bold text-text mb-2">Отзыв отправлен!</h3>
+                      <p className="text-muted max-w-[260px]">
                         Спасибо за ваше мнение. Отзыв появится на сайте после проверки модератором.
                       </p>
                     </motion.div>
@@ -151,8 +153,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
                       className="space-y-6"
                     >
                       <div className="text-center">
-                        <h3 className="text-xl font-bold text-neutral-900">Оставить отзыв</h3>
-                        <p className="text-sm text-neutral-500 mt-1 truncate px-4">
+                        <h3 className="text-xl font-bold text-text">Оставить отзыв</h3>
+                        <p className="text-sm text-muted mt-1 truncate px-4">
                           {projectTitle}
                         </p>
                       </div>
@@ -174,13 +176,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
                                 className={`transition-colors duration-200 ${
                                   (hoverRating || rating) >= star
                                     ? 'fill-yellow-400 text-yellow-400'
-                                    : 'fill-neutral-100 text-neutral-300'
+                                    : 'fill-surface-2 text-faint'
                                 }`}
                               />
                             </button>
                           ))}
                         </div>
-                        <p className="text-xs font-medium text-neutral-400 h-4">
+                        <p className="text-xs font-medium text-muted h-4">
                           {(hoverRating || rating) > 0 
                             ? ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично!'][(hoverRating || rating) - 1] 
                             : 'Выберите оценку'}
@@ -189,7 +191,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
 
                       <div className="space-y-4">
                         <div>
-                          <label htmlFor="name" className="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-1.5 ml-1">
+                          <label htmlFor="name" className="block text-xs font-bold text-muted uppercase tracking-wider mb-1.5 ml-1">
                             Ваше имя
                           </label>
                           <input
@@ -198,13 +200,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
                             required
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder="Иван Петров"
-                            className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all placeholder:text-neutral-400"
+                            placeholder="Иван"
+                            className="w-full px-4 py-3 rounded-xl bg-bg border border-border focus:border-cta focus:ring-1 focus:ring-cta outline-none transition-all placeholder:text-faint"
                           />
                         </div>
                         
                         <div>
-                          <label htmlFor="review" className="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-1.5 ml-1">
+                          <label htmlFor="review" className="block text-xs font-bold text-muted uppercase tracking-wider mb-1.5 ml-1">
                             Ваш отзыв
                           </label>
                           <textarea
@@ -214,13 +216,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
                             onChange={(e) => setText(e.target.value)}
                             rows={4}
                             placeholder="Расскажите о своих впечатлениях..."
-                            className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all resize-none placeholder:text-neutral-400"
+                            className="w-full px-4 py-3 rounded-xl bg-bg border border-border focus:border-cta focus:ring-1 focus:ring-cta outline-none transition-all resize-none placeholder:text-faint"
                           />
                         </div>
 
                         {/* Photo Attachments */}
                         <div>
-                           <label className="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2 ml-1">
+                           <label className="block text-xs font-bold text-muted uppercase tracking-wider mb-2 ml-1">
                             Фото (макс. 3)
                           </label>
                           
@@ -233,7 +235,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
                                   initial={{ opacity: 0, scale: 0.8 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   exit={{ opacity: 0, scale: 0.5 }}
-                                  className="relative w-20 h-20 rounded-xl overflow-hidden group border border-neutral-200"
+                                  className="relative w-20 h-20 rounded-xl overflow-hidden group border border-border"
                                 >
                                   <img 
                                     src={photo.previewUrl} 
@@ -256,7 +258,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
                               <button
                                 type="button"
                                 onClick={() => fileInputRef.current?.click()}
-                                className="w-20 h-20 rounded-xl border-2 border-dashed border-neutral-300 flex flex-col items-center justify-center gap-1 text-neutral-400 hover:text-black hover:border-neutral-400 hover:bg-neutral-50 transition-all active:scale-95"
+                                className="w-20 h-20 rounded-xl border-2 border-dashed border-border flex flex-col items-center justify-center gap-1 text-faint hover:text-accent hover:border-faint hover:bg-surface-2 transition-all active:scale-95"
                               >
                                 <Camera size={20} />
                                 <span className="text-[10px] font-bold">Фото</span>
@@ -277,7 +279,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, projectTitle
                       <button
                         type="submit"
                         disabled={isSubmitting || rating === 0}
-                        className="w-full py-3.5 bg-black text-white rounded-xl font-bold text-base shadow-lg shadow-black/20 hover:bg-neutral-800 disabled:bg-neutral-300 disabled:shadow-none disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+                        className="w-full py-3.5 bg-cta text-white rounded-xl font-bold text-base shadow-lg shadow-black/20 hover:bg-cta-hover disabled:bg-surface-2 disabled:text-faint disabled:shadow-none disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                       >
                         {isSubmitting ? (
                           <>
