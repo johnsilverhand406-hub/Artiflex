@@ -28,3 +28,4 @@ dist-ssr
 /*.png
 /lb2.js
 deploy.log
+_incoming/
