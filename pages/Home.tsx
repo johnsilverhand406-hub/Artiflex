@@ -27,6 +27,17 @@ const Home: React.FC = () => {
     'Студия 3D-печати SLA и FDM, 3D-моделирование. г. Ковров, ул. Ватутина 59.'
   );
 
+  const getLightboxWorks = (work: Work | null): Work[] => {
+    if (!work) return [];
+    if (work.image.includes('/sla/')) return slaWorks.slice(0, 10);
+    if (work.image.includes('/fdm/')) return fdmWorks.slice(0, 10);
+    if (work.image.includes('/modeling/')) return modelingWorks.slice(0, 10);
+    return [];
+  };
+
+  const lightboxWorks = getLightboxWorks(selectedWork);
+  const selectedIndex = selectedWork ? lightboxWorks.findIndex(w => w.id === selectedWork.id) : -1;
+
   return (
     <div className="pb-8">
       <header className="flex items-center justify-center pt-4 pb-6">
@@ -119,7 +130,13 @@ const Home: React.FC = () => {
       </div>
 
       {/* Shared lightbox (rendered outside the animated/transformed content) */}
-      <WorkLightbox work={selectedWork} onClose={() => setSelectedWork(null)} />
+      <WorkLightbox
+        work={selectedWork}
+        works={lightboxWorks}
+        currentIndex={selectedIndex}
+        onIndexChange={(idx) => setSelectedWork(lightboxWorks[idx])}
+        onClose={() => setSelectedWork(null)}
+      />
     </div>
   );
 };

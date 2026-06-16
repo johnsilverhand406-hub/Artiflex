@@ -28,7 +28,13 @@ const WorkGallery: React.FC<Props> = ({ works, title, subtitle, cta }) => {
           <WorkCard key={work.id} work={work} onClick={() => setSelected(work)} />
         ))}
       </div>
-      <WorkLightbox work={selected} onClose={() => setSelected(null)} />
+      <WorkLightbox
+        work={selected}
+        works={works.slice(0, 10)}
+        currentIndex={selected ? works.slice(0, 10).findIndex(w => w.id === selected.id) : -1}
+        onIndexChange={(idx) => setSelected(works[idx])}
+        onClose={() => setSelected(null)}
+      />
     </div>
   );
 };
