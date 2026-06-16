@@ -190,21 +190,21 @@ const WorkLightbox: React.FC<{
             </div>
 
             {/* Reviews + leave a review */}
-            {work.review && (
-              <div className="p-5">
-                <div className="space-y-3">
+            <div className="p-5">
+              {work.review && (
+                <div className="space-y-3 mb-5">
                   <p className="text-muted text-sm font-medium">Отзывы клиентов</p>
                   <ReviewItem review={work.review} />
                 </div>
+              )}
 
-                <button
-                  onClick={() => setReviewOpen(true)}
-                  className="mt-5 w-full flex items-center justify-center gap-2 border border-border hover:border-accent bg-surface-2 text-text px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"
-                >
-                  <MessageSquarePlus size={16} /> Оставить отзыв
-                </button>
-              </div>
-            )}
+              <button
+                onClick={() => setReviewOpen(true)}
+                className="w-full flex items-center justify-center gap-2 border border-border hover:border-accent bg-surface-2 text-text px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+              >
+                <MessageSquarePlus size={16} /> Оставить отзыв
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       )}
