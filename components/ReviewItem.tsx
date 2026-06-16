@@ -1,5 +1,5 @@
 import React from 'react';
-import { Review } from '../data/reviews';
+import { Review } from '../data/works';
 
 const avatarColors = [
   '#E53935', '#D81B60', '#8E24AA', '#5E35B1',

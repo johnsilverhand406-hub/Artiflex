@@ -84,23 +84,21 @@ const WorkLightbox: React.FC<{ work: Work | null; onClose: () => void }> = ({ wo
             )}
 
             {/* Reviews + leave a review */}
-            <div className="p-5">
-              {work.reviews && work.reviews.length > 0 && (
+            {work.review && (
+              <div className="p-5">
                 <div className="space-y-3">
                   <p className="text-muted text-sm font-medium">Отзывы клиентов</p>
-                  {work.reviews.map((r, idx) => (
-                    <ReviewItem key={idx} review={r} />
-                  ))}
+                  <ReviewItem review={work.review} />
                 </div>
-              )}
 
-              <button
-                onClick={() => setReviewOpen(true)}
-                className="mt-5 w-full flex items-center justify-center gap-2 border border-border hover:border-accent bg-surface-2 text-text px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"
-              >
-                <MessageSquarePlus size={16} /> Оставить отзыв
-              </button>
-            </div>
+                <button
+                  onClick={() => setReviewOpen(true)}
+                  className="mt-5 w-full flex items-center justify-center gap-2 border border-border hover:border-accent bg-surface-2 text-text px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                >
+                  <MessageSquarePlus size={16} /> Оставить отзыв
+                </button>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       )}
